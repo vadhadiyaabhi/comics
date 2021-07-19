@@ -1,3 +1,5 @@
+/* media queries to make responsible on different plateform */
+
 @media screen and (min-width: 993px)
 {
     .container
@@ -100,3 +102,6 @@ h3
 {
     color: rgb(88, 146, 255);
 }
+
+
+
