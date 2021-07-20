@@ -22,19 +22,6 @@
             $random = rand(1,999);
             echo $random;
 
-            // path of the JSON file
-            $file = 'https://xkcd.com/'. $random . '/info.0.json';
-
-            // Read the contents of the file and store it into a variable
-            $data = file_get_contents($file);
-
-            // decode the JSON data
-            $result = json_decode($data);
-
-
-            echo $result->title;
-
-
             $to = $email;
             $subject = "Verification email";
             $body = "Please enter this verification code to subscribe TheGreatComis $otp";
@@ -88,11 +75,11 @@
             <p style="text-align:center;" class="para1">Subscribe with valid email to get Great Comics after every 5 minutes</p>
             <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
                 <label for="email">First Name:</label><br>
-                <input type="text" name="fname" id="inputField" autocomplete="on" onclick="outline()" placeholder="Enter Your Fisrt name" required> <br>
+                <input type="text" name="fname" id="inputField" autocomplete="on" placeholder="Enter Your Fisrt name" required> <br>
                 <label for="email">Last Name:</label><br>
-                <input type="text" name="lname" class="inputField" autocomplete="on" onclick="outline()" placeholder="Enter Your Last name" required> <br>
+                <input type="text" name="lname" class="inputField" autocomplete="on" placeholder="Enter Your Last name" required> <br>
                 <label for="email">Email address:</label><br>
-                <input type="text" name="email" class="inputField" autocomplete="on" onclick="outline()" placeholder="Enter Your Valid email" required> <br>
+                <input type="text" name="email" class="inputField" autocomplete="on" placeholder="Enter Your Valid email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required> <br>
                 <input type="submit" value="submit" name="submit">
             </form>
 
