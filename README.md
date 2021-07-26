@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+## I named this app as "The Great Comics"
 
 ## Problem Statement
 Creating a simple PHP application that allows users to subscribe on this application and send email that contain random comics at every 5 minutes.
