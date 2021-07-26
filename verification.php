@@ -1,7 +1,7 @@
-<!-- <?php
+<?php
 
     session_start();
-    include 'dbconnect.php';
+    require 'dbconnect.php';
     $status = false;
     $err = false;
     if(!isset($_SESSION['otp']) || $_SESSION['email_sent'] != true)
@@ -11,9 +11,9 @@
     else
     {
         $email = $_SESSION['email'];
-        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        if(isset($_POST['submit']))
         {
-            $otp = mysqli_real_escape_string($con,$_POST['otp']);
+            $otp = isset($_POST['otp']) ? (int)mysqli_real_escape_string($con,$_POST['otp']) : '';
             if($otp == $_SESSION['otp']){
                 $q = "UPDATE email_info SET status = 'active' where email = '$email'";
                 $result = mysqli_query($con,$q);
@@ -30,7 +30,7 @@
         
     }
 
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -126,6 +126,10 @@
             padding: 10px 20px;
             margin: 20px auto;
         }
+        .success>a
+        {
+            color: black;
+        }
         .fail{
             display: inline-block;
             background-color: red;
@@ -143,9 +147,9 @@
             <h3>Verify Your Email</h3>
         </div>
         <p>Enter verification code that has been already sent to your email</p>
-        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+        <form action="<?php if(isset($_SERVER['PHP_SELF'])){echo htmlentities($_SERVER['PHP_SELF']); } ?>" method="POST">
             <label for="otp">Enter OTP</label><br>
-            <input type="number" name="otp" id=""><br>
+            <input type="number" name="otp" autocomplete="off"><br>
             <input type="submit" value="verify" name="submit">
         </form>
 
@@ -154,7 +158,8 @@
                 <?php if($status == true){ ?>
                     <p class="success">
                         You've subscribed to TheGreatComis successfuly...,<br>
-                        Check your email at every 5 minutes to enjoy different Comics!!!
+                        Check your email at every 5 minutes to enjoy different Comics!!! <br>
+                        <a href="index.php">Goto home page</a>
                     </p>
                 <?php } ?>
             

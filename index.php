@@ -1,41 +1,50 @@
 <?php
 
-    $var = false;
     session_start();
+    $var = false;
 
-    if($_SERVER['REQUEST_METHOD'] == "POST")
+    if(isset($_POST['submit']))
     {
-        include 'dbconnect.php';
+        require 'dbconnect.php';
         
-
-        $email = mysqli_real_escape_string($con,$_POST['email']);
-        $fname = mysqli_real_escape_string($con,$_POST['fname']);
-        $lname = mysqli_real_escape_string($con,$_POST['lname']);
+        $email = isset($_POST['email']) ? mysqli_real_escape_string($con,$_POST['email']) : '';
+        $fname = isset($_POST['fname']) ? mysqli_real_escape_string($con,$_POST['fname']) : '';
+        $lname = isset($_POST['lname']) ? mysqli_real_escape_string($con,$_POST['lname']) : '';
 
         $otp = rand(100000,999999);
         $_SESSION['otp'] = $otp;
 
-        $que = "INSERT INTO email_info (fname, lname, email,status) VALUES ('$fname', '$lname', '$email', 'inactive')";
-        $result = mysqli_query($con,$que);
-        if($result)
-        {
-            $random = rand(1,999);
-            echo $random;
+        $q = "SELECT email from email_info WHERE email = '$email'";
+        $result = mysqli_query($con,$q);
+        $num = mysqli_num_rows($result);
+        if($num > 0){
+            $var = true;
+        }
 
-            $to = $email;
-            $subject = "Verification email";
-            $body = "Please enter this verification code to subscribe TheGreatComis $otp";
-            $headers = "From:vadhadiyaabhishek@gmail.com\nMIME-Version: 1.0\nContent-Type: text/html; charset=utf-8\n";
+        else{
+            $que = "INSERT INTO email_info (fname, lname, email,status) VALUES ('$fname', '$lname', '$email', 'inactive')";
+            $result = mysqli_query($con,$que);
+            if($result)
+            {
+                $random = rand(1,999);
+                echo $random;
 
-            if(mail($to, $subject, $body, $headers)){
-                $_SESSION['email'] = $email;
-                $_SESSION['email_sent'] = true;
+                $to = $email;
+                $subject = "Verification email";
+                $body = "Please enter this verification code to subscribe TheGreatComis $otp";
+                $headers = "From:vadhadiyaabhishek@gmail.com\nMIME-Version: 1.0\nContent-Type: text/html; charset=utf-8\n";
+
+                $mail = mail($to, $subject, $body, $headers);
+                if($mail){
+                    $_SESSION['email'] = $email;
+                    $_SESSION['email_sent'] = true;
+                }
+                else
+                    $_SESSION['email'] = "unsent";
+
+                header('location: verification.php');
+                exit;
             }
-            else
-                $_SESSION['email'] = "unsent";
-
-            header('location: verification.php');
-            exit;
         }
         
       
@@ -60,6 +69,19 @@
             a:link{
                 text-decoration: none;
             }
+            .status{
+                display: flex;
+                align-items: center;
+            }
+            .fail{
+                display: inline-block;
+                align-items: center;
+                background-color: rgb(0, 119, 255);
+                color: white;
+                border-radius: 10px;
+                padding: 12px;
+                margin: 20px auto;
+            }
         </style>
         <title>Signin Page</title>
     </head>
@@ -73,7 +95,7 @@
         </div>
         <div class="container">
             <p style="text-align:center;" class="para1">Subscribe with valid email to get Great Comics after every 5 minutes</p>
-            <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form action="<?php if(isset($_SERVER['PHP_SELF'])){echo htmlentities($_SERVER['PHP_SELF']); } ?>" method="POST">
                 <label for="email">First Name:</label><br>
                 <input type="text" name="fname" id="inputField" autocomplete="on" placeholder="Enter Your Fisrt name" required> <br>
                 <label for="email">Last Name:</label><br>
@@ -83,7 +105,14 @@
                 <input type="submit" value="submit" name="submit">
             </form>
 
-            <a href="unsubscribe.php">Click here to Unsubscribe!!</a>
+            <a href="unsubscribe.php">Click here to Unsubscribe...</a>
+            <div class="status">
+                <?php if($var == true){ ?>
+                    <p class="fail">
+                        You are already subscribed to TheGreatComics!
+                    </p>
+                <?php } ?>
+            </div>
 
         </div>
     </body>

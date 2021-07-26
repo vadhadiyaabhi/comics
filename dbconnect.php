@@ -6,8 +6,8 @@ $con=mysqli_connect('localhost','root');
  }
  else
  {
-    //  echo "connection done";
+   $a=mysqli_select_db($con,'comics');
  }
- $a=mysqli_select_db($con,'comics');
+ 
 
 ?>
