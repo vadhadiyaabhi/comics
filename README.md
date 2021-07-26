@@ -29,8 +29,8 @@ Creating a simple PHP application that allows users to subscribe on this applica
  ### Resources that I've used
  - VSCode as editor
  
-=======
-# I named this as "The Great Comics"
+
+<!-- # I named this as "The Great Comics"
 #description
 This is a simple website in which user can subscribe by his/her valid email address
 And then subscribed user will get mail with comics at every 5 minutes.
@@ -46,4 +46,4 @@ To subscribe there is a verification step also, so no one can use other's email
 Simply this website will execute email sending script at every 5 minutes
 There is verificaion feature availabale
 And this is safe from vulnerabilities like SQL injection.
->>>>>>> cfe5d354c121ff9521e4164b1dc60e62b3f1b537
+>>>>>>> cfe5d354c121ff9521e4164b1dc60e62b3f1b537 -->
